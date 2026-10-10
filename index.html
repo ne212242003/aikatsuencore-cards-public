@@ -409,6 +409,8 @@ body.plain .pager.top{display:flex}
   .face{padding:26px 5px 8px;gap:5px}.face .fr{font-size:11px;padding:1px 8px}.face .fn{font-size:11px}.face .fnum{font-size:10px}
   .own{font-size:12px;padding:2px;gap:2px}.own button{width:26px;height:26px;font-size:16px}.own b{min-width:16px}
 }
+/* 持ってないカードを白黒で表示する設定（取引用の白い背景のときは、いつもカラー） */
+body.gray-off:not(.plain) .tile.off .tpic img,body.gray-off:not(.plain) .tile.off .tpic .face,body.gray-off:not(.plain) .card.off .thumb img{filter:grayscale(1);opacity:.7}
 </style>
 </head>
 <body>
@@ -439,7 +441,7 @@ body.plain .pager.top{display:flex}
   </div>
   <div class="mact" style="margin-top:0">
     <button id="vtoggle">表示: カード</button>
-    <button id="gtoggle">弾ごとに表示: オン</button>
+    <button id="gstoggle">持ってないカード: カラー</button>
   </div>
   <div class="pager top" id="pagerTop"></div>
   <div class="list" id="list"></div>
@@ -554,8 +556,9 @@ try{
   if([3,4,5,6].includes(c))tradeCols=c;
   if(p!==null&&[0,4,8,12,16,20].includes(+p))tradePer=+p;
 }catch(e){}
-let gmode=true;
-try{gmode=localStorage.getItem("aikatsu-gmode")!=="0"}catch(e){}
+// 持ってないカードの表示: "color"（カラー）または "gray"（白黒）
+let offMode="color";
+try{offMode=localStorage.getItem("aikatsu-offmode")==="gray"?"gray":"color"}catch(e){}
 function allSeries(){return [...new Set(cards.map(c=>c.series).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ja",{numeric:true}))}
 function fillSeriesFilter(){
   const sel=$("fSeries"),v=sel.value,ss=allSeries();
@@ -619,7 +622,7 @@ function render(){
     if(q&&![c.name,c.brand,c.series,c.num,c.memo].join(" ").toLowerCase().includes(q))return false;
     return true;
   }).sort((a,b)=>(b.t||0)-(a.t||0));
-  const useGroup=gmode&&ss.size!==1&&cards.some(c=>c.series);
+  const useGroup=cards.some(c=>c.series);
   if(useGroup){
     const order=allSeries();
     rows.sort((a,b)=>{
@@ -649,12 +652,13 @@ function render(){
   $("sWish").textContent=cards.filter(c=>c.wish).length;
   $("list").className="list"+(vmode==="grid"||plain?" grid":"");
   $("vtoggle").textContent=vmode==="grid"?"表示: カード":"表示: リスト";
-  $("gtoggle").textContent="弾ごとに表示: "+(gmode?"オン":"オフ");
+  $("gstoggle").textContent="持ってないカード: "+(offMode==="gray"?"白黒":"カラー");
+  document.body.classList.toggle("gray-off",offMode==="gray");
 
-  const tile=c=>`<div class="tile" data-id="${c.id}" style="--c:${COLORS[c.type]||"var(--line)"}"><div class="tpic">${photoHtml(c,faceHtml(c))}<button class="theart ${c.wish?"on":""}" data-a="w" aria-label="欲しいリストに入れる">${c.wish?"♥":"♡"}</button></div>${ownBadge(c)}</div>`;
+  const tile=c=>`<div class="tile${c.qty<1?" off":""}" data-id="${c.id}" style="--c:${COLORS[c.type]||"var(--line)"}"><div class="tpic">${photoHtml(c,faceHtml(c))}<button class="theart ${c.wish?"on":""}" data-a="w" aria-label="欲しいリストに入れる">${c.wish?"♥":"♡"}</button></div>${ownBadge(c)}</div>`;
 
   $("list").innerHTML=rows.length?(vmode==="grid"||plain?rows.map(tile).join(""):rows.map(c=>`
-    <div class="card" data-id="${c.id}" style="--c:${COLORS[c.type]||"var(--line)"}">
+    <div class="card${c.qty<1?" off":""}" data-id="${c.id}" style="--c:${COLORS[c.type]||"var(--line)"}">
       <div class="thumb ${c.rare}${imgSrc(c,T_THUMB)?" has":""}">${photoHtml(c,esc(c.rare))}</div>
       <div class="info">
         <div class="name">${esc(c.name)}</div>
@@ -776,7 +780,7 @@ $("tradePanel").onclick=e=>{
   }
   pagerClick(e);
 };
-$("gtoggle").onclick=()=>{gmode=!gmode;try{localStorage.setItem("aikatsu-gmode",gmode?"1":"0")}catch(e){}render()};
+$("gstoggle").onclick=()=>{offMode=offMode==="gray"?"color":"gray";try{localStorage.setItem("aikatsu-offmode",offMode)}catch(e){}render()};
 
 $("vtoggle").onclick=()=>{
   vmode=vmode==="grid"?"list":"grid";

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#FB9FD6">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>アイカツ！アンコール カード管理（非公式）</title>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--mint:#FFF4FB;--aqua:#FFD3EC;--rose:#FB9FD6;--peach:#FFC6E8;--stars2:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='80'%3E%3Cpath d='M18 10L19.7 14.3L24 16L19.7 17.7L18 22L16.3 17.7L12 16L16.3 14.3Z' fill='%23FFFFFF'/%3E%3Cpath d='M70 46L71.1 48.9L74 50L71.1 51.1L70 54L68.9 51.1L66 50L68.9 48.9Z' fill='%23FFF3C4'/%3E%3Cpath d='M118 13L120.0 18.0L125 20L120.0 22.0L118 27L116.0 22.0L111 20L116.0 18.0Z' fill='%23FFFFFF'/%3E%3Cpath d='M140 59L140.8 61.2L143 62L140.8 62.8L140 65L139.2 62.8L137 62L139.2 61.2Z' fill='%23FFFFFF'/%3E%3Cpath d='M44 65L44.8 67.2L47 68L44.8 68.8L44 71L43.2 68.8L41 68L43.2 67.2Z' fill='%23FFF3C4'/%3E%3C/svg%3E");--bg:#FFF4FB;--sky:radial-gradient(120% 60% at 0% 0%,#FFD3EC 0%,rgba(255,211,236,0) 70%),radial-gradient(120% 60% at 100% 100%,rgba(251,159,214,.55) 0%,rgba(251,159,214,0) 70%),radial-gradient(90% 40% at 100% 40%,rgba(205,180,255,.35) 0%,rgba(205,180,255,0) 70%);--stars:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg opacity='0.75'%3E%3Cpath d='M34 28L36.2 33.8L42 36L36.2 38.2L34 44L31.8 38.2L26 36L31.8 33.8Z' fill='%23F6C453'/%3E%3Cpath d='M118 86L119.7 90.3L124 92L119.7 93.7L118 98L116.3 93.7L112 92L116.3 90.3Z' fill='%23F8A8D6'/%3E%3Cpath d='M66 124L67.1 126.9L70 128L67.1 129.1L66 132L64.9 129.1L62 128L64.9 126.9Z' fill='%23CDB4FF'/%3E%3Ccircle cx='104' cy='22' r='1.6' fill='%23F8A8D6'/%3E%3Ccircle cx='18' cy='96' r='1.6' fill='%23CDB4FF'/%3E%3Ccircle cx='80' cy='70' r='1.6' fill='%23F6C453'/%3E%3Ccircle cx='138' cy='140' r='1.6' fill='%23CDB4FF'/%3E%3C/g%3E%3C/svg%3E");--surface:#FFFAFD;--ink:#4a2f46;--on:#4a2f46;--sub:#80627a;--line:#FFC4E5;--pink:#FB9FD6;--pink2:#FFC6E8;--pinkbg:rgba(251,159,214,.2);--gold:#F6C453;--title:#FB9FD6;--outline:#fff;--tshadow:#FFC6E8;--display:"Mochiy Pop One","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;--none:#ffffff;--cute:#e62061;--cool:#1957a2;--sexy:#7d0782;--pop:#e96600;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2b1d2c;--sky:linear-gradient(180deg,#221524 0%,#2b1d2c 55%,#4a2442 100%);--stars:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg opacity='0.6'%3E%3Cpath d='M34 28L36.2 33.8L42 36L36.2 38.2L34 44L31.8 38.2L26 36L31.8 33.8Z' fill='%23FFE9A8'/%3E%3Cpath d='M118 86L119.7 90.3L124 92L119.7 93.7L118 98L116.3 93.7L112 92L116.3 90.3Z' fill='%23FFFFFF'/%3E%3Cpath d='M66 124L67.1 126.9L70 128L67.1 129.1L66 132L64.9 129.1L62 128L64.9 126.9Z' fill='%23F8A8D6'/%3E%3Ccircle cx='104' cy='22' r='1.6' fill='%23FFFFFF'/%3E%3Ccircle cx='18' cy='96' r='1.6' fill='%23F8A8D6'/%3E%3Ccircle cx='80' cy='70' r='1.6' fill='%23FFE9A8'/%3E%3Ccircle cx='138' cy='140' r='1.6' fill='%23F8A8D6'/%3E%3C/g%3E%3C/svg%3E");--surface:#3b2a3c;--ink:#FFF4FB;--sub:#d8bfd2;--line:rgba(251,159,214,.32);--pinkbg:rgba(251,159,214,.22);--title:#FFF4FB;--outline:#5a3358;--tshadow:#FB9FD6}}
+:root[data-theme="dark"]{--bg:#2b1d2c;--sky:linear-gradient(180deg,#221524 0%,#2b1d2c 55%,#4a2442 100%);--stars:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cg opacity='0.6'%3E%3Cpath d='M34 28L36.2 33.8L42 36L36.2 38.2L34 44L31.8 38.2L26 36L31.8 33.8Z' fill='%23FFE9A8'/%3E%3Cpath d='M118 86L119.7 90.3L124 92L119.7 93.7L118 98L116.3 93.7L112 92L116.3 90.3Z' fill='%23FFFFFF'/%3E%3Cpath d='M66 124L67.1 126.9L70 128L67.1 129.1L66 132L64.9 129.1L62 128L64.9 126.9Z' fill='%23F8A8D6'/%3E%3Ccircle cx='104' cy='22' r='1.6' fill='%23FFFFFF'/%3E%3Ccircle cx='18' cy='96' r='1.6' fill='%23F8A8D6'/%3E%3Ccircle cx='80' cy='70' r='1.6' fill='%23FFE9A8'/%3E%3Ccircle cx='138' cy='140' r='1.6' fill='%23F8A8D6'/%3E%3C/g%3E%3C/svg%3E");--surface:#3b2a3c;--ink:#FFF4FB;--sub:#d8bfd2;--line:rgba(251,159,214,.32);--pinkbg:rgba(251,159,214,.22);--title:#FFF4FB;--outline:#5a3358;--tshadow:#FB9FD6}
+*{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--stars),var(--sky);background-color:var(--bg);color:var(--ink);font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;line-height:1.5}
+.wrap{width:100%;max-width:none;margin:0;padding:16px 24px 96px;}
+.hero{background:var(--stars2),linear-gradient(135deg,var(--rose),var(--peach));border-radius:22px;padding:14px 16px 16px;margin:0 0 10px;color:var(--on)}
+.hero h1{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.3;margin:0;color:var(--on);letter-spacing:.03em;text-shadow:0 2px 0 rgba(255,255,255,.55)}
+.hero .sub{color:var(--on);opacity:.85;margin:2px 0 0;font-size:13px}
+.ribbon{height:6px;border-radius:99px;margin:0 0 14px;background:linear-gradient(90deg,var(--rose),var(--peach),var(--aqua),var(--mint))}
+.sub{color:var(--sub);font-size:13px;margin:0 0 14px}
+.stats{display:flex;gap:8px;margin-bottom:14px}
+.stat{box-shadow:0 4px 14px -8px rgba(150,110,220,.5);flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.stat b{display:block;font-size:22px;font-weight:400;font-family:var(--display);color:var(--on)}
+.stat span{font-size:12px;color:var(--on);opacity:.85}
+.stat{color:var(--on);border-color:transparent!important}
+.stat:nth-child(1){background:var(--aqua)}
+.stat:nth-child(2){background:var(--rose)}
+.stat:nth-child(3){background:var(--peach)}
+.tabs{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:10px}
+.tabs button{flex:1;border:0;background:none;color:var(--sub);font:inherit;font-weight:700;padding:8px;border-radius:999px;cursor:pointer}
+.tabs button.on{background:linear-gradient(135deg,var(--pink),var(--pink2));color:var(--on)}
+input,select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 14px}
+.filters #fBrand{grid-column:1/-1}
+.sq{flex:none;width:44px;border-radius:12px;border:1px solid var(--line);background:var(--pink);color:var(--on);font:inherit;font-size:20px;font-weight:900;cursor:pointer}
+.sq.del-btn{background:var(--surface);color:#d23b3b;font-size:15px}
+.filters select{min-width:0}
+.grp{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:6px;padding:8px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--pink);font-family:var(--display);color:var(--ink)}
+.grp small{font-family:inherit;color:var(--sub);font-size:12px}
+.filters select{flex:1;padding:8px 10px;font-size:14px}
+.list{display:grid;gap:10px}
+.card{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;border-left:6px solid var(--c,var(--line));cursor:pointer}
+.thumb{flex:none;width:52px;height:74px;border-radius:8px;background:var(--aqua);display:grid;place-items:center;font-weight:900;font-size:15px;color:var(--on);border:1px solid var(--line)}
+.thumb[class*="PR"],.thumb.ER,.thumb.EP{border-color:var(--gold);color:var(--ink)}
+.thumb{overflow:hidden;padding:0}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb.has{cursor:zoom-in;border-color:var(--c)}
+.photo{display:flex;gap:12px;align-items:center}
+.pv{flex:none;width:63px;height:90px;border-radius:8px;background:var(--aqua);border:1px dashed var(--line);overflow:hidden;display:grid;place-items:center;font-size:11px;color:var(--sub);text-align:center;cursor:pointer}
+.pv img{width:100%;height:100%;object-fit:cover}
+.pbtn{display:grid;gap:6px}
+.pbtn button{padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+#view{background:transparent;width:min(92vw,420px)}
+#view img{width:100%;max-height:80vh;object-fit:contain;border-radius:14px;display:block}
+#view button{margin:10px auto 0;display:block;padding:8px 22px;border-radius:999px;border:0;background:var(--surface);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.info{flex:1;min-width:0}
+.name{font-weight:700;font-size:16px;overflow-wrap:anywhere}
+.meta{font-size:12px;color:var(--sub);margin-top:2px}
+.qty{display:flex;align-items:center;gap:8px;margin-top:8px}
+.qty button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:18px;line-height:1;cursor:pointer}
+.qty b{min-width:20px;text-align:center}
+.heart{margin-left:auto;border:0;background:none;font-size:22px;cursor:pointer;color:var(--sub)}
+.heart.on{background:var(--pink);color:var(--on);border-radius:50%;width:34px;height:34px;font-size:18px}
+.empty{text-align:center;color:var(--sub);padding:40px 12px}
+.fab{font-family:var(--display)!important;font-weight:400!important;background-image:linear-gradient(135deg,var(--pink),var(--pink2));position:fixed;right:max(16px,calc(50% - 264px));bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--pink);color:var(--on);border:0;border-radius:999px;padding:14px 22px;font:inherit;font-weight:900;font-size:16px;box-shadow:0 6px 18px rgba(250,154,181,.55);cursor:pointer;z-index:5}
+dialog{border:0;border-radius:20px;padding:0;width:min(92vw,480px);background:var(--bg);color:var(--ink)}
+dialog::backdrop{background:rgba(40,20,50,.5)}
+form{padding:18px;display:grid;gap:10px}
+form h2{margin:0;font-size:18px;font-family:var(--display);font-weight:400;color:var(--ink)}
+label{font-size:12px;font-weight:700;color:var(--sub);display:grid;gap:4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns{display:flex;gap:8px;margin-top:6px}
+.btns button{flex:1;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.btns .ok{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:transparent;color:var(--on)}
+.btns .del{flex:none;color:#d23b3b}
+.list.grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:8px;}
+.tile{cursor:pointer}
+.tpic{box-shadow:0 5px 14px -6px rgba(150,110,220,.55);position:relative;aspect-ratio:63/88;border-radius:10px;overflow:hidden;background:var(--aqua);border:2px solid var(--c,var(--line))}
+.own{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:6px;padding:4px 6px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap;background:var(--surface);color:var(--sub);border:1.5px dashed var(--line)}
+.own i{flex:none;display:grid;place-items:center;width:16px;height:16px;border-radius:50%;font-style:normal;font-size:11px;line-height:1;border:1.5px solid currentColor}
+.own.on{background:linear-gradient(135deg,var(--pink),var(--pink2));color:var(--on);border:1.5px solid transparent}
+.own.on i{background:var(--on);color:#fff;border-color:var(--on)}
+.card .own{display:inline-flex;margin:4px 0 0;padding:2px 10px}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile .ph{width:100%;height:100%;display:grid;place-items:center;font-size:28px;font-weight:900;color:var(--on)}
+.tq{font-family:var(--display);font-weight:400!important;position:absolute;top:6px;left:6px;background:rgba(40,20,50,.75);color:#fff;font-size:12px;font-weight:900;border-radius:99px;padding:1px 8px}
+.theart{position:absolute;top:2px;right:2px;border:0;background:none;font-size:22px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);cursor:pointer}
+.theart.on{background:var(--pink);color:var(--on);border-radius:50%;text-shadow:none;width:28px;height:28px;top:4px;right:4px;font-size:16px;line-height:1;padding:0}
+.tn{position:absolute;left:0;right:0;bottom:0;padding:18px 6px 5px;font-size:11px;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(30,10,40,.85));overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.tn span{display:block;overflow:hidden;text-overflow:ellipsis}
+.tn .tnn{font-size:10px;font-weight:400;opacity:.9}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:rgba(40,20,50,.92);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:700;z-index:10;max-width:90vw;text-align:center}
+.mact{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.mact button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.mact .main{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:transparent;color:var(--on)}
+.foot{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.foot button{border:1px solid var(--line);background:var(--surface);color:var(--sub);border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
+
+/* ===== スマホ操作性アップデート ===== */
+@media (max-width: 600px){
+  body{
+    -webkit-text-size-adjust:100%;
+    overscroll-behavior-x:none;
+  }
+
+  .wrap{
+    width:100%;
+    max-width:none;
+    padding:10px 10px calc(96px + env(safe-area-inset-bottom,0px));
+  }
+
+  .hero{
+    border-radius:18px;
+    padding:13px 14px 14px;
+    margin-bottom:8px;
+  }
+  .hero h1{font-size:21px}
+  .hero .sub{font-size:12px}
+
+  .ribbon{height:5px;margin-bottom:10px}
+
+  .stats{
+    gap:6px;
+    margin-bottom:10px;
+  }
+  .stat{
+    min-width:0;
+    border-radius:12px;
+    padding:8px 6px;
+    text-align:center;
+  }
+  .stat b{font-size:18px}
+  .stat span{
+    display:block;
+    font-size:10px;
+    white-space:nowrap;
+  }
+
+  .tabs{
+    margin-bottom:8px;
+    padding:3px;
+  }
+  .tabs button{
+    min-height:42px;
+    padding:8px 5px;
+    font-size:13px;
+  }
+
+  #q{
+    min-height:46px;
+    padding:10px 13px;
+    font-size:16px; /* iOSの自動ズーム防止 */
+    border-radius:13px;
+  }
+
+  .filters{
+    gap:6px;
+    margin:7px 0 10px;
+  }
+  .filters #fBrand{
+    flex:1 1 100%;
+  }
+  .filters select{
+    flex:1 1 calc(50% - 3px);
+    min-height:44px;
+    padding:8px 9px;
+    font-size:14px;
+  }
+
+  .mact{
+    gap:6px;
+    margin:8px 0 10px !important;
+  }
+  .mact button{
+    min-height:44px;
+    padding:9px 12px;
+    font-size:13px;
+  }
+  #bulkBtn{flex:1 1 auto}
+  #vtoggle{flex:0 0 auto}
+
+  /* 写真表示はスマホでは3列 */
+  .list.grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+  }
+  .tpic{
+    border-width:2px;
+    border-radius:9px;
+  }
+  .tile .ph{font-size:24px}
+  .tq{
+    top:4px;
+    left:4px;
+    font-size:10px;
+    padding:1px 6px;
+  }
+  .theart{
+    min-width:34px;
+    min-height:34px;
+    padding:5px;
+    top:0;
+    right:0;
+    font-size:18px;
+  }
+  .theart.on{
+    width:28px;
+    height:28px;
+    min-width:28px;
+    min-height:28px;
+    top:3px;
+    right:3px;
+  }
+  .tn{
+    padding:20px 4px 4px;
+    font-size:9px;
+  }
+  .tn .tnn{font-size:8px}
+  .own{font-size:10px;padding:3px 4px;gap:4px;margin-top:5px}
+  .own i{width:14px;height:14px;font-size:10px}
+
+  /* リスト表示もタップ領域を拡大 */
+  .card{
+    gap:10px;
+    min-height:94px;
+    padding:10px;
+    border-left-width:5px;
+  }
+  .thumb{
+    width:58px;
+    height:82px;
+  }
+  .name{font-size:15px}
+  .meta{font-size:11px}
+  .qty{
+    gap:7px;
+    margin-top:7px;
+  }
+  .qty button{
+    width:40px;
+    height:40px;
+    font-size:20px;
+  }
+  .heart{
+    width:40px;
+    height:40px;
+    min-width:40px;
+    margin-left:auto;
+    font-size:22px;
+  }
+  .heart.on{
+    width:40px;
+    height:40px;
+    font-size:19px;
+  }
+
+  .fab{
+    right:10px;
+    bottom:calc(10px + env(safe-area-inset-bottom,0px));
+    min-height:50px;
+    padding:12px 17px;
+    font-size:14px;
+  }
+
+  .foot{
+    gap:6px;
+    margin-top:14px;
+  }
+  .foot button{
+    min-height:42px;
+    padding:8px 11px;
+    font-size:12px;
+  }
+
+  /* ダイアログはスマホ幅いっぱいに近づけ、入力欄を縦並びに */
+  dialog{
+    width:min(94vw,480px);
+    max-height:88vh;
+    overflow:auto;
+    border-radius:18px;
+  }
+  form{
+    padding:15px;
+    gap:9px;
+  }
+  form h2{font-size:17px}
+  label{font-size:11px}
+  input,select{
+    min-height:44px;
+    padding:9px 11px;
+  }
+  .row{
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+  .btns{
+    gap:7px;
+  }
+  .btns button{
+    min-height:46px;
+    padding:10px 8px;
+  }
+  .sq{
+    width:44px;
+    min-width:44px;
+    height:44px;
+  }
+
+  .photo{
+    align-items:center;
+    gap:10px;
+  }
+  .pv{
+    width:70px;
+    height:98px;
+  }
+  .pbtn{
+    flex:1;
+  }
+  .pbtn button{
+    min-height:44px;
+    width:100%;
+  }
+
+  #view{
+    width:94vw;
+    max-height:90vh;
+  }
+  #view img{
+    max-height:76vh;
+  }
+  #view button{
+    min-height:44px;
+    padding:10px 24px;
+  }
+
+  #toast{
+    bottom:calc(72px + env(safe-area-inset-bottom,0px));
+    font-size:13px;
+  }
+}
+
+@media (max-width:380px){
+  .wrap{padding-left:8px;padding-right:8px}
+  .stat span{font-size:9px}
+  .tabs button{font-size:12px}
+  .filters select{font-size:13px}
+  .mact button{font-size:12px;padding-left:9px;padding-right:9px}
+  .fab{font-size:13px;padding-left:14px;padding-right:14px}
+}
+/* ===== PC版：画面いっぱい＋カード10列 ===== */
+@media (min-width:601px){
+  .wrap{
+    width:100%;
+    max-width:none;
+    margin:0;
+    padding:16px 24px 96px;
+  }
+
+  .list.grid{
+    grid-template-columns:repeat(10,minmax(0,1fr));
+    gap:8px;
+  }
+}
+.msel{width:100%;min-width:0;min-height:40px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.msel::after{content:"▾";float:right;opacity:.6;margin-left:6px}
+.msel.wide{grid-column:1/-1}
+.msel.active{border-color:var(--pink);background:var(--pinkbg);font-weight:700}
+#msList{max-height:55vh;overflow:auto;display:grid;gap:4px}
+.mrow2{display:flex;align-items:center;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);cursor:pointer}
+.mrow2 input{width:20px;height:20px;padding:0;flex:none;accent-color:#e86fb8}
+.mrow2 span{flex:1;overflow-wrap:anywhere}
+.foot2{display:flex;justify-content:center;margin-top:14px}
+.foot2 button{border:2px solid var(--pink);background:var(--surface);color:var(--ink);border-radius:999px;padding:10px 20px;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.foot2 button.on{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:transparent;color:var(--on)}
+/* 取引用: 背景を真っ白にする（画像用。追加ボタンは非表示） */
+body.plain{background:#fff!important;--bg:#FFF4FB;--surface:#FFFAFD;--ink:#4a2f46;--on:#4a2f46;--sub:#80627a;--line:#FFC4E5;--pinkbg:rgba(251,159,214,.2)}
+body.plain .fab{display:none}
+body.plain .own{display:none}
+body.plain .tn,body.plain .tq,body.plain .theart,body.plain .grp{display:none}
+body.plain .list.grid{grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));gap:8px;max-width:calc(var(--cols,4) * 200px);margin-left:auto;margin-right:auto}
+.tpanel{display:none;gap:12px;margin:16px auto 0;max-width:520px;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+body.plain .tpanel{display:grid}
+.trow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.trow>span{font-size:13px;font-weight:700;min-width:88px;color:var(--ink)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button,.pager button{min-width:40px;padding:7px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.seg button.on{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:transparent;color:var(--on)}
+.pager{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pager b{font-size:14px;color:var(--ink)}
+.pager small{color:var(--sub);font-size:12px}
+.pager button:disabled{opacity:.35;cursor:default}
+.pager.top{display:none;justify-content:center;margin:6px 0 10px}
+body.plain .pager.top{display:flex}
+.tq{display:none!important}
+.face{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:30px 8px 10px;text-align:center;background:linear-gradient(165deg,var(--pinkbg),var(--surface))}
+.face .fr{font-family:var(--display);font-size:13px;line-height:1.4;padding:1px 10px;border-radius:99px;background:rgba(255,255,255,.8);border:1.5px solid var(--c,var(--pink));color:var(--ink)}
+.face .fn{font-weight:700;font-size:13px;line-height:1.35;color:var(--ink);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.face .fnum{margin-top:auto;font-size:11px;font-weight:700;color:var(--sub)}
+.own{display:flex;align-items:center;justify-content:space-between;gap:4px;margin-top:6px;padding:3px;border-radius:99px;background:var(--surface);border:1.5px dashed var(--line);color:var(--sub);font-size:14px;font-weight:700}
+.own b{min-width:22px;text-align:center}
+.own button{flex:none;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:var(--pinkbg);color:var(--ink);font:inherit;font-size:18px;line-height:1;display:grid;place-items:center;cursor:pointer}
+.own.on{background:linear-gradient(135deg,var(--pink),var(--pink2));border:1.5px solid transparent;color:var(--on)}
+.own.on button{background:rgba(255,255,255,.6)}
+.notice{margin:18px auto 0;max-width:640px;font-size:11px;line-height:1.7;color:var(--sub);text-align:center}
+@media (max-width:600px){
+  .face{padding:26px 5px 8px;gap:5px}.face .fr{font-size:11px;padding:1px 8px}.face .fn{font-size:11px}.face .fnum{font-size:10px}
+  .own{font-size:12px;padding:2px;gap:2px}.own button{width:26px;height:26px;font-size:16px}.own b{min-width:16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>アイカツ！アンコール カード管理</h1>
+    <p class="sub">持っているカードの枚数を記録して、取引用の画像も作れます</p>
+  </header>
+  <div class="ribbon" aria-hidden="true"></div>
+  <div class="stats">
+    <div class="stat"><b id="sKinds">0</b><span>持っている種類</span></div>
+    <div class="stat"><b id="sTotal">0</b><span>合計枚数</span></div>
+    <div class="stat"><b id="sWish">0</b><span>欲しい</span></div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button data-t="all" class="on">すべて</button>
+    <button data-t="own">持ってる</button>
+    <button data-t="no">持ってない</button>
+    <button data-t="wish">欲しい</button>
+  </div>
+  <input id="q" type="search" placeholder="カード名・ブランド・番号で検索">
+  <div class="filters">
+    <select id="fBrand"></select>
+    <select id="fSeries"></select>
+    <select id="fType"><option value="">タイプ: すべて</option><option>なし</option><option>キュート</option><option>クール</option><option>セクシー</option><option>ポップ</option></select>
+    <select id="fRare"><option value="">レアリティ: すべて</option><option>N</option><option>R</option><option>PR</option><option>ER</option><option>PR★</option><option>EP</option></select>
+    <select id="fCat"><option value="">カテゴリー: すべて</option><option>トップス</option><option>ボトムス</option><option>ワンピース</option><option>シューズ</option><option>アクセサリー</option><option>フルコーデ</option></select>
+  </div>
+  <div class="mact" style="margin-top:0">
+    <button id="vtoggle">表示: カード</button>
+    <button id="gtoggle">弾ごとに表示: オン</button>
+  </div>
+  <div class="pager top" id="pagerTop"></div>
+  <div class="list" id="list"></div>
+  <div class="foot">
+    <button id="exp">枚数データを書き出す</button>
+    <button id="imp">枚数データを読み込む</button>
+    <button id="wipe">自分の枚数を消す</button>
+  </div>
+  <p class="notice">「アイカツ！アンコール」非公式のファン作成ツールです。作品名・カード画像などの権利は、各権利者に帰属します。<br>枚数のデータは、お使いのブラウザの中にだけ保存されます（サーバーには送信されません）。ブラウザのデータを消すと、枚数も消えます。必要なときは「書き出す」でバックアップしてください。</p>
+  <div class="tpanel" id="tradePanel">
+    <div class="trow"><span>1行の枚数</span><div class="seg" data-k="cols"><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button></div></div>
+    <div class="trow"><span>1画像の枚数</span><div class="seg" data-k="per"><button data-v="4">4</button><button data-v="8">8</button><button data-v="12">12</button><button data-v="16">16</button><button data-v="20">20</button><button data-v="0">すべて</button></div></div>
+    <div class="trow"><span>ページ</span><div class="pager" id="pagerBottom"></div></div>
+  </div>
+  <div class="foot2"><button id="plainBtn">取引用: 背景を真っ白にする</button></div>
+</div>
+
+<dialog id="ask"><form method="dialog" onsubmit="return false"><p id="askMsg" style="margin:0;white-space:pre-wrap;overflow-wrap:anywhere"></p><input id="askIn" hidden><div class="btns"><button type="button" id="askNo">キャンセル</button><button type="button" class="ok" id="askOk">OK</button></div></form></dialog>
+<div id="toast" hidden></div>
+
+<dialog id="msDlg">
+  <form method="dialog" onsubmit="return false">
+    <h2 id="msTitle"></h2>
+    <p style="margin:0;font-size:12px;color:var(--sub)">複数選びたいときは、いくつでもチェックできます</p>
+    <div id="msList"></div>
+    <div class="btns"><button type="button" id="msClear">クリア</button><button type="button" class="ok" id="msClose">閉じる</button></div>
+  </form>
+</dialog>
+
+<dialog id="view"><img id="vimg" alt="カード写真"><button id="vclose">閉じる</button></dialog>
+
+
+<script>
+const OWN_KEY="aikatsu-encore-own-v1";   // 見る人ごとの「枚数」「欲しい」の保存先
+const MASTER_URL="cards.json";            // 公開するカード一覧（運営者が用意）
+const SHOW_IMAGES=true;                   // false にすると、画像を表示せず文字のカードで表示します
+const COLORS={"なし":"var(--none)","キュート":"var(--cute)","クール":"var(--cool)","セクシー":"var(--sexy)","ポップ":"var(--pop)"};
+let cards=[],tab="all",vmode="grid",loading=true,loadError=false,own={};
+try{vmode=localStorage.getItem("aikatsu-vmode")||"grid"}catch(e){}
+const $=id=>document.getElementById(id);
+
+const T_THUMB="w_420,q_auto,f_auto",T_FULL="w_1200,q_auto,f_auto";
+// Cloudinaryの配信URLに変換指定（サイズ縮小・自動形式）を差し込む
+function cld(url,t){return url&&url.includes("/upload/")?url.replace("/upload/","/upload/"+t+"/"):url}
+// 写真の置き場所: IMG_BASE の下の s/（一覧用の小さい画像）と l/（拡大用の大きい画像）に、同じファイル名で置きます。
+// cards.json の img には、ファイル名（例: e1-001.webp）を書きます。http で始まるURLを書いた場合は、そのURLを使います（Cloudinaryなど）。
+const IMG_BASE="img/";
+function imgSrc(c,t){
+  if(!SHOW_IMAGES||!c.img)return "";
+  if(/^https?:\/\//.test(c.img))return cld(c.img,t);
+  return IMG_BASE+(t===T_FULL?"l/":"s/")+encodeURIComponent(c.img);
+}
+function photoHtml(c,fallback){const u=imgSrc(c,T_THUMB);return u?`<img src="${u}" alt="${esc(c.name)}" data-id="${c.id}" loading="lazy" onerror="imgFail(this)">`:fallback}
+// 写真が見つからないときは、文字のカードで表示します
+function imgFail(el){const c=cards.find(x=>x.id===el.dataset.id);if(!c)return;if(el.closest(".thumb"))el.outerHTML=esc(c.rare);else el.outerHTML=faceHtml(c)}
+function faceHtml(c){return `<div class="face"><span class="fr">${esc(c.rare)}</span><span class="fn">${esc(c.name)}</span><span class="fnum">${esc(c.num||"")}</span></div>`}
+function ownBadge(c){return `<div class="own${c.qty>0?" on":""}"><button type="button" data-a="-" aria-label="枚数を減らす">−</button><b>${c.qty}</b><button type="button" data-a="+" aria-label="枚数を増やす">＋</button></div>`}
+
+function readOwn(){try{const o=JSON.parse(localStorage.getItem(OWN_KEY));own=o&&typeof o==="object"&&!Array.isArray(o)?o:{}}catch(e){own={}}}
+function applyOwn(){cards.forEach(c=>{const x=own[c.id];c.qty=x?Math.max(0,Math.min(99,x.q|0)):0;c.wish=!!(x&&x.w)})}
+function save(){
+  const o={};
+  cards.forEach(c=>{if(c.qty>0||c.wish)o[c.id]={q:c.qty,w:c.wish?1:0}});
+  own=o;
+  try{localStorage.setItem(OWN_KEY,JSON.stringify(o))}catch(e){toast("保存できませんでした")}
+}
+async function loadMaster(){
+  const r=await fetch(MASTER_URL,{cache:"no-cache"});
+  if(!r.ok)throw new Error("HTTP "+r.status);
+  const j=await r.json();
+  const arr=Array.isArray(j)?j:(j&&Array.isArray(j.cards)?j.cards:null);
+  if(!arr)throw new Error("format");
+  cards=arr.filter(c=>c&&c.id!==undefined&&c.name).map((c,i)=>({id:String(c.id),t:-i,name:String(c.name),brand:c.brand||"",series:c.series||"",num:c.num||"",type:c.type||"なし",rare:c.rare||"",cat:c.cat||"",img:c.img||"",qty:0,wish:false}));
+}
+
+function toast(m){
+  const t=$("toast");
+  t.textContent=m;
+  t.hidden=false;
+  clearTimeout(toast.t);
+  toast.t=setTimeout(()=>{t.hidden=true},2800);
+}
+
+function ask(msg,o={}){
+  return new Promise(res=>{
+    const d=$("ask"),i=$("askIn"),done=v=>{d.close();res(v)};
+    $("askMsg").textContent=msg;
+    i.hidden=!o.input;
+    i.value=o.value||"";
+    $("askOk").onclick=()=>done(o.input?i.value:true);
+    $("askNo").onclick=()=>done(o.input?null:false);
+    i.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("askOk").click()}};
+    d.oncancel=e=>{e.preventDefault();done(o.input?null:false)};
+    d.showModal();
+    if(o.input){i.focus();i.select()}
+  });
+}
+
+function allBrands(){return [...new Set(cards.map(c=>c.brand).filter(Boolean))]}
+function opts(list,first){return `<option value="${first[0]}">${first[1]}</option>`+list.map(b=>`<option value="${esc(b)}">${esc(b)}</option>`).join("")}
+
+function fillFilter(){
+  const sel=$("fBrand"),v=sel.value,bs=allBrands();
+  const n=b=>cards.filter(c=>c.brand===b&&c.qty>0).length,tt=b=>cards.filter(c=>c.brand===b).length;
+  sel.innerHTML=`<option value="">ブランド: すべて</option>`+bs.map(b=>`<option value="${esc(b)}">${esc(b)}（${n(b)}/${tt(b)}）</option>`).join("")+`<option value="__none">ノーブランド</option>`;
+  sel.value=[...sel.options].some(o=>o.value===v)?v:"";
+}
+
+let tradeCols=4,tradePer=12,tradePage=0;
+try{
+  const c=+localStorage.getItem("aikatsu-trade-cols"),p=localStorage.getItem("aikatsu-trade-per");
+  if([3,4,5,6].includes(c))tradeCols=c;
+  if(p!==null&&[0,4,8,12,16,20].includes(+p))tradePer=+p;
+}catch(e){}
+let gmode=true;
+try{gmode=localStorage.getItem("aikatsu-gmode")!=="0"}catch(e){}
+function allSeries(){return [...new Set(cards.map(c=>c.series).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ja",{numeric:true}))}
+function fillSeriesFilter(){
+  const sel=$("fSeries"),v=sel.value,ss=allSeries();
+  const own=x=>cards.filter(c=>c.series===x&&c.qty>0).length,tot=x=>cards.filter(c=>c.series===x).length;
+  sel.innerHTML=`<option value="">弾: すべて</option>`+ss.map(x=>`<option value="${esc(x)}">${esc(x)}（${own(x)}/${tot(x)}）</option>`).join("")+`<option value="__none">弾なし</option>`;
+  sel.value=[...sel.options].some(o=>o.value===v)?v:"";
+}
+// ===== 複数選択フィルター =====
+const MS_IDS=["fBrand","fSeries","fType","fRare","fCat"];
+const MS_NAME={fBrand:"ブランド",fSeries:"弾",fType:"タイプ",fRare:"レアリティ",fCat:"カテゴリー"};
+const msSel={};MS_IDS.forEach(id=>{msSel[id]=new Set()});
+let msCur=null;
+function msOptions(id){return [...$(id).options].filter(o=>o.value!=="").map(o=>({v:o.value,t:o.textContent}))}
+function ensureMsBtn(id){
+  let b=$("ms_"+id);
+  if(b)return b;
+  b=document.createElement("button");
+  b.type="button";b.id="ms_"+id;b.className="msel"+(id==="fBrand"?" wide":"");
+  b.onclick=()=>openMs(id);
+  const sel=$(id);sel.style.display="none";sel.parentNode.insertBefore(b,sel);
+  return b;
+}
+function msLabel(id){
+  const set=msSel[id];
+  if(!set.size)return `${MS_NAME[id]}: すべて`;
+  if(set.size===1){const o=msOptions(id).find(x=>set.has(x.v));return `${MS_NAME[id]}: ${o?o.t.replace(/（[^）]*）$/,""):[...set][0]}`}
+  return `${MS_NAME[id]}: ${set.size}件選択`;
+}
+function refreshMsel(){
+  MS_IDS.forEach(id=>{
+    const valid=new Set(msOptions(id).map(o=>o.v));
+    [...msSel[id]].forEach(v=>{if(!valid.has(v))msSel[id].delete(v)});
+    const b=ensureMsBtn(id);
+    b.textContent=msLabel(id);
+    b.classList.toggle("active",msSel[id].size>0);
+  });
+}
+function openMs(id){
+  msCur=id;
+  $("msTitle").textContent=MS_NAME[id]+"を選ぶ";
+  $("msList").innerHTML=msOptions(id).map(o=>`<label class="mrow2"><input type="checkbox" value="${esc(o.v)}"${msSel[id].has(o.v)?" checked":""}><span>${esc(o.t)}</span></label>`).join("");
+  $("msDlg").showModal();
+}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function render(){
+  const plain=document.body.classList.contains("plain");
+  fillFilter();
+  fillSeriesFilter();
+  refreshMsel();
+  const sb=msSel.fBrand,ss=msSel.fSeries,st=msSel.fType,sr=msSel.fRare,sc=msSel.fCat,q=$("q").value.trim().toLowerCase();
+  let rows=cards.filter(c=>{
+    if(tab==="own"&&c.qty<1)return false;
+    if(tab==="no"&&c.qty>0)return false;
+    if(tab==="wish"&&!c.wish)return false;
+    if(sb.size&&!sb.has(c.brand||"__none"))return false;
+    if(ss.size&&!ss.has(c.series||"__none"))return false;
+    if(st.size&&!st.has(c.type))return false;
+    if(sr.size&&!sr.has(c.rare))return false;
+    if(sc.size&&!sc.has(c.cat))return false;
+    if(q&&![c.name,c.brand,c.series,c.num,c.memo].join(" ").toLowerCase().includes(q))return false;
+    return true;
+  }).sort((a,b)=>(b.t||0)-(a.t||0));
+  const useGroup=gmode&&ss.size!==1&&cards.some(c=>c.series);
+  if(useGroup){
+    const order=allSeries();
+    rows.sort((a,b)=>{
+      const ia=a.series?order.indexOf(a.series):9999,ib=b.series?order.indexOf(b.series):9999;
+      if(ia!==ib)return ia-ib;
+      return (a.num||"~").localeCompare(b.num||"~","ja",{numeric:true});
+    });
+  }
+
+  if(plain){
+    const total=rows.length,per=tradePer||total||1,pages=Math.max(1,Math.ceil(total/per));
+    if(tradePage>=pages)tradePage=pages-1;
+    if(tradePage<0)tradePage=0;
+    rows=rows.slice(tradePage*per,tradePage*per+per);
+    const ph=`<button type="button" data-p="-1"${tradePage<=0?" disabled":""}>◀</button><b>${tradePage+1} / ${pages}</b><button type="button" data-p="1"${tradePage>=pages-1?" disabled":""}>▶</button><small>全${total}枚</small>`;
+    $("pagerTop").innerHTML=ph;
+    $("pagerBottom").innerHTML=ph;
+    document.body.style.setProperty("--cols",tradeCols);
+    $("tradePanel").querySelectorAll(".seg").forEach(sg=>{
+      const cur=sg.dataset.k==="cols"?tradeCols:tradePer;
+      [...sg.children].forEach(b=>b.classList.toggle("on",+b.dataset.v===cur));
+    });
+  }
+
+  $("sKinds").textContent=cards.filter(c=>c.qty>0).length+" / "+cards.length;
+  $("sTotal").textContent=cards.reduce((s,c)=>s+c.qty,0);
+  $("sWish").textContent=cards.filter(c=>c.wish).length;
+  $("list").className="list"+(vmode==="grid"||plain?" grid":"");
+  $("vtoggle").textContent=vmode==="grid"?"表示: カード":"表示: リスト";
+  $("gtoggle").textContent="弾ごとに表示: "+(gmode?"オン":"オフ");
+
+  const tile=c=>`<div class="tile" data-id="${c.id}" style="--c:${COLORS[c.type]||"var(--line)"}"><div class="tpic">${photoHtml(c,faceHtml(c))}<button class="theart ${c.wish?"on":""}" data-a="w" aria-label="欲しいリストに入れる">${c.wish?"♥":"♡"}</button></div>${ownBadge(c)}</div>`;
+
+  $("list").innerHTML=rows.length?(vmode==="grid"||plain?rows.map(tile).join(""):rows.map(c=>`
+    <div class="card" data-id="${c.id}" style="--c:${COLORS[c.type]||"var(--line)"}">
+      <div class="thumb ${c.rare}${imgSrc(c,T_THUMB)?" has":""}">${photoHtml(c,esc(c.rare))}</div>
+      <div class="info">
+        <div class="name">${esc(c.name)}</div>
+        <div class="meta">${c.series?esc(c.series)+" ":""}${esc(c.brand||"ノーブランド")} ${esc(c.cat)} ${esc(c.type)}${c.num?" No."+esc(c.num):""}</div>
+        <div class="qty">
+          <button data-a="-" aria-label="枚数を減らす">−</button><b>${c.qty}</b><button data-a="+" aria-label="枚数を増やす">＋</button>
+          <button class="heart ${c.wish?"on":""}" data-a="w" aria-label="欲しいリストに入れる">${c.wish?"♥":"♡"}</button>
+        </div>
+      </div>
+    </div>`).join("")):`<div class="empty">${loading?"カードを読み込み中…":loadError?"カード一覧を読み込めませんでした。しばらくしてから、ページを再読み込みしてください。":"条件に合うカードがありません"}</div>`;
+  if(useGroup){
+    let last=null;
+    [...$("list").children].forEach(el=>{
+      const c=cards.find(x=>x.id===el.dataset.id);
+      if(!c)return;
+      const name=c.series||"";
+      if(name===last)return;
+      last=name;
+      const g=rows.filter(x=>(x.series||"")===name);
+      const h=document.createElement("div");
+      h.className="grp";
+      h.innerHTML=`<span>${esc(name||"弾なし")}</span><small>持ってる ${g.filter(x=>x.qty>0).length} / ${g.length}</small>`;
+      $("list").insertBefore(h,el);
+    });
+  }
+}
+
+$("list").onclick=e=>{
+  const el=e.target.closest(".card,.tile");if(!el)return;
+  const c=cards.find(x=>x.id===el.dataset.id);if(!c)return;
+  const a=e.target.closest("button")?.dataset.a;
+  if(!a){
+    const u=imgSrc(c,T_FULL);
+    if(u&&e.target.closest(".tpic,.thumb")){
+      $("vimg").onerror=()=>{const th=imgSrc(c,T_THUMB);if(th&&!$("vimg").src.endsWith(th))$("vimg").src=th};
+      $("vimg").src=u;
+      $("view").showModal();
+    }
+    return;
+  }
+  if(a==="+")c.qty=Math.min(99,c.qty+1);
+  else if(a==="-")c.qty=Math.max(0,c.qty-1);
+  else c.wish=!c.wish;
+  save();
+  render();
+};
+
+$("tabs").onclick=e=>{
+  const b=e.target.closest("button");if(!b)return;
+  tab=b.dataset.t;
+  tradePage=0;
+  [...$("tabs").children].forEach(x=>x.classList.toggle("on",x===b));
+  render();
+};
+
+["q","fBrand","fSeries","fType","fRare","fCat"].forEach(id=>$(id).addEventListener("input",()=>{tradePage=0;render()}));
+
+$("exp").onclick=()=>{
+  const t=JSON.stringify(own);
+  const fb=()=>ask("下のデータをコピーして、メモなどに保存してください",{input:true,value:t});
+  if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast("枚数のデータをコピーしました"),fb);else fb();
+};
+$("imp").onclick=async()=>{
+  const v=await ask("書き出したデータを貼り付けてください。\n（今の枚数は、上書きされます）",{input:true});
+  if(v===null||!String(v).trim())return;
+  try{
+    const o=JSON.parse(v);
+    if(!o||typeof o!=="object"||Array.isArray(o))throw new Error("format");
+    own=o;applyOwn();save();render();
+    toast("データを読み込みました");
+  }catch(e){toast("読み込めませんでした。書き出したデータを、そのまま貼り付けてください")}
+};
+$("wipe").onclick=async()=>{
+  const n=cards.filter(c=>c.qty>0||c.wish).length;
+  if(!n){toast("消すデータがありません");return}
+  if(!(await ask(`${n}枚分の枚数と「欲しい」の記録を、すべて消します。\n元に戻せません。よろしいですか？`)))return;
+  cards.forEach(c=>{c.qty=0;c.wish=false});
+  save();render();
+  toast("消しました");
+};
+$("msList").onchange=e=>{
+  const i=e.target.closest("input");if(!i||!msCur)return;
+  if(i.checked)msSel[msCur].add(i.value);else msSel[msCur].delete(i.value);
+  tradePage=0;
+  render();
+};
+$("msClear").onclick=()=>{
+  if(!msCur)return;
+  msSel[msCur].clear();
+  [...$("msList").querySelectorAll("input")].forEach(i=>{i.checked=false});
+  tradePage=0;
+  render();
+};
+$("msClose").onclick=()=>$("msDlg").close();
+$("plainBtn").onclick=()=>{
+  const on=document.body.classList.toggle("plain");
+  $("plainBtn").classList.toggle("on",on);
+  $("plainBtn").textContent=on?"取引用: 背景を元に戻す":"取引用: 背景を真っ白にする";
+  tradePage=0;
+  render();
+};
+function pagerClick(e){
+  const b=e.target.closest("button");
+  if(!b||!b.dataset.p||b.disabled)return;
+  tradePage+=+b.dataset.p;
+  render();
+}
+$("pagerTop").onclick=pagerClick;
+$("tradePanel").onclick=e=>{
+  const b=e.target.closest("button");if(!b)return;
+  const seg=b.closest(".seg");
+  if(seg){
+    const v=+b.dataset.v;
+    if(seg.dataset.k==="cols"){tradeCols=v;try{localStorage.setItem("aikatsu-trade-cols",String(v))}catch(err){}}
+    else{tradePer=v;try{localStorage.setItem("aikatsu-trade-per",String(v))}catch(err){}}
+    tradePage=0;
+    render();
+    return;
+  }
+  pagerClick(e);
+};
+$("gtoggle").onclick=()=>{gmode=!gmode;try{localStorage.setItem("aikatsu-gmode",gmode?"1":"0")}catch(e){}render()};
+
+$("vtoggle").onclick=()=>{
+  vmode=vmode==="grid"?"list":"grid";
+  try{localStorage.setItem("aikatsu-vmode",vmode)}catch(e){}
+  render();
+};
+
+$("vclose").onclick=()=>$("view").close();
+$("view").onclick=e=>{if(e.target===$("view"))$("view").close()};
+
+// 起動: 見る人の枚数を読み込み → カード一覧を読み込む
+readOwn();
+render();
+loadMaster()
+  .then(()=>{applyOwn();loading=false;render()})
+  .catch(e=>{console.error(e);loading=false;loadError=true;render()});
+</script>
+</body>
+</html>

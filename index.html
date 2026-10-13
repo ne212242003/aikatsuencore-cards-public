@@ -94,6 +94,7 @@ label{font-size:12px;font-weight:700;color:var(--sub);display:grid;gap:4px}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:rgba(40,20,50,.92);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;font-weight:700;z-index:10;max-width:90vw;text-align:center}
 .mact{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 .mact button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.mact button.on{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:transparent;color:var(--on)}
 .mact .main{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:transparent;color:var(--on)}
 .foot{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
 .foot button{border:1px solid var(--line);background:var(--surface);color:var(--sub);border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
@@ -411,6 +412,19 @@ body.plain .pager.top{display:flex}
 }
 /* 持ってないカードを白黒で表示する設定（取引用の白い背景のときは、いつもカラー） */
 body.gray-off:not(.plain) .tile.off .tpic img,body.gray-off:not(.plain) .tile.off .tpic .face,body.gray-off:not(.plain) .card.off .thumb img{filter:grayscale(1);opacity:.7}
+.vobanner{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:8px 0 12px;padding:10px 12px;border-radius:14px;background:var(--pinkbg);border:1.5px solid var(--pink);font-size:13px;font-weight:700;color:var(--ink)}
+.vobanner[hidden]{display:none}
+.vobanner button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+body.viewonly .own button,body.viewonly .theart:not(.on),body.viewonly .qty button,body.viewonly .foot{display:none}
+body.viewonly .theart.on{pointer-events:none}
+body.viewonly .own{justify-content:center}
+#syncBody .sm{font-size:12px;line-height:1.7;color:var(--sub);margin:6px 0}
+.srow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.srow button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.srow button.main{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:transparent;color:var(--on)}
+.srow button.danger{color:#d23b3b}
+#qrBox{text-align:center}
+#qrBox img{width:200px;height:200px;image-rendering:pixelated;background:#fff;padding:6px;border-radius:12px}
 </style>
 </head>
 <body>
@@ -420,6 +434,7 @@ body.gray-off:not(.plain) .tile.off .tpic img,body.gray-off:not(.plain) .tile.of
     <p class="sub">持っているカードの枚数を記録して、取引用の画像も作れます</p>
   </header>
   <div class="ribbon" aria-hidden="true"></div>
+  <div id="voBanner" class="vobanner" hidden><span>閲覧専用: 共有された枚数を表示しています。あなたの枚数は変わりません。</span><button type="button" id="voBack">自分の枚数に戻る</button></div>
   <div class="stats">
     <div class="stat"><b id="sKinds">0</b><span>持っている種類</span></div>
     <div class="stat"><b id="sTotal">0</b><span>合計枚数</span></div>
@@ -442,15 +457,17 @@ body.gray-off:not(.plain) .tile.off .tpic img,body.gray-off:not(.plain) .tile.of
   <div class="mact" style="margin-top:0">
     <button id="vtoggle">表示: カード</button>
     <button id="gstoggle">持ってないカード: カラー</button>
+    <button id="ptoggle" hidden>パラレル: 表示</button>
   </div>
   <div class="pager top" id="pagerTop"></div>
   <div class="list" id="list"></div>
   <div class="foot">
+    <button id="syncBtn">☁ 同期</button>
     <button id="exp">枚数データを書き出す</button>
     <button id="imp">枚数データを読み込む</button>
     <button id="wipe">自分の枚数を消す</button>
   </div>
-  <p class="notice">「アイカツ！アンコール」非公式のファン作成ツールです。作品名・カード画像などの権利は、各権利者に帰属します。<br>枚数のデータは、お使いのブラウザの中にだけ保存されます（サーバーには送信されません）。ブラウザのデータを消すと、枚数も消えます。必要なときは「書き出す」でバックアップしてください。</p>
+  <p class="notice">「アイカツ！アンコール」非公式のファン作成ツールです。作品名・カード画像などの権利は、各権利者に帰属します。<br>枚数のデータは、お使いのブラウザの中に保存されます。「同期」を使った場合だけ、カードのidと枚数が、このサイトのサーバー（Cloudflare）にも保存されます（名前・メールアドレスなどは保存しません）。専用リンクを知っている人は、その枚数を見られます。ブラウザのデータを消すと、同期していない枚数は消えます。</p>
   <div class="tpanel" id="tradePanel">
     <div class="trow"><span>1行の枚数</span><div class="seg" data-k="cols"><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button></div></div>
     <div class="trow"><span>1画像の枚数</span><div class="seg" data-k="per"><button data-v="4">4</button><button data-v="8">8</button><button data-v="12">12</button><button data-v="16">16</button><button data-v="20">20</button><button data-v="0">すべて</button></div></div>
@@ -468,6 +485,14 @@ body.gray-off:not(.plain) .tile.off .tpic img,body.gray-off:not(.plain) .tile.of
     <p style="margin:0;font-size:12px;color:var(--sub)">複数選びたいときは、いくつでもチェックできます</p>
     <div id="msList"></div>
     <div class="btns"><button type="button" id="msClear">クリア</button><button type="button" class="ok" id="msClose">閉じる</button></div>
+  </form>
+</dialog>
+
+<dialog id="syncDlg">
+  <form method="dialog" onsubmit="return false">
+    <h2>☁ 同期（専用リンク）</h2>
+    <div id="syncBody"></div>
+    <div class="btns"><button type="button" class="ok" id="syncClose">閉じる</button></div>
   </form>
 </dialog>
 
@@ -500,13 +525,192 @@ function imgFail(el){const c=cards.find(x=>x.id===el.dataset.id);if(!c)return;if
 function faceHtml(c){return `<div class="face"><span class="fr">${esc(c.rare)}</span><span class="fn">${esc(c.name)}</span><span class="fnum">${esc(c.num||"")}</span></div>`}
 function ownBadge(c){return `<div class="own${c.qty>0?" on":""}"><button type="button" data-a="-" aria-label="枚数を減らす">−</button><b>${c.qty}</b><button type="button" data-a="+" aria-label="枚数を増やす">＋</button></div>`}
 
-function readOwn(){try{const o=JSON.parse(localStorage.getItem(OWN_KEY));own=o&&typeof o==="object"&&!Array.isArray(o)?o:{}}catch(e){own={}}}
+// ---- 枚数データ: own[id] = {q:枚数, w:欲しい(0/1), t:最後に変えた時刻(ms)}
+function normOwn(o){
+  const out={};
+  if(!o||typeof o!=="object"||Array.isArray(o))return out;
+  for(const id in o){
+    const x=o[id];
+    if(Array.isArray(x))out[id]={q:x[0]|0,w:x[1]?1:0,t:+x[2]||1};
+    else if(x&&typeof x==="object")out[id]={q:x.q|0,w:x.w?1:0,t:+x.t||1};
+  }
+  return out;
+}
+function sameOwn(a,b){const ka=Object.keys(a),kb=Object.keys(b);if(ka.length!==kb.length)return false;return ka.every(k=>b[k]&&a[k].q===b[k].q&&a[k].w===b[k].w&&a[k].t===b[k].t)}
+function mergeOwn(a,b){const out={...a};for(const id in b){const x=out[id];if(!x||b[id].t>=x.t)out[id]=b[id]}return out}
+function toWire(o){const w={};for(const id in o)w[id]=[o[id].q,o[id].w,o[id].t];return w}
+const sync={on:false,k:"",ro:"",viewOnly:false,status:"off",last:0,timer:null,busy:false,again:false,lastPull:0};
+const SYNC_KEY="aikatsu-encore-sync-v1";
+function readOwn(){try{own=normOwn(JSON.parse(localStorage.getItem(OWN_KEY)))}catch(e){own={}}}
+function persistOwn(){if(sync.viewOnly)return;try{localStorage.setItem(OWN_KEY,JSON.stringify(own))}catch(e){toast("保存できませんでした")}}
 function applyOwn(){cards.forEach(c=>{const x=own[c.id];c.qty=x?Math.max(0,Math.min(99,x.q|0)):0;c.wish=!!(x&&x.w)})}
-function save(){
-  const o={};
-  cards.forEach(c=>{if(c.qty>0||c.wish)o[c.id]={q:c.qty,w:c.wish?1:0}});
-  own=o;
-  try{localStorage.setItem(OWN_KEY,JSON.stringify(o))}catch(e){toast("保存できませんでした")}
+function touch(c){own[c.id]={q:c.qty,w:c.wish?1:0,t:Date.now()}}
+function save(){persistOwn();schedulePush()}
+
+// ---- 同期（専用リンク）
+function b64url(u8){return btoa(String.fromCharCode(...u8)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function randKey(){const a=new Uint8Array(16);crypto.getRandomValues(a);return b64url(a)}
+async function deriveRo(k){const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("ro:"+k));return b64url(new Uint8Array(d).slice(0,16))}
+function loadSyncKeys(){try{const j=JSON.parse(localStorage.getItem(SYNC_KEY));if(j&&j.k){sync.on=true;sync.k=j.k}}catch(e){}}
+function saveSyncKeys(){try{if(sync.on)localStorage.setItem(SYNC_KEY,JSON.stringify({k:sync.k}));else localStorage.removeItem(SYNC_KEY)}catch(e){}}
+function parseHash(){const m=location.hash.match(/^#([kv])=([A-Za-z0-9_-]{22,64})$/);return m?{type:m[1],key:m[2]}:null}
+function privateLink(){return location.origin+location.pathname+"#k="+sync.k}
+function roLink(){return location.origin+location.pathname+"#v="+sync.ro}
+async function api(method,k,body){
+  const r=await fetch("/api/sync?k="+encodeURIComponent(k),{method,cache:"no-store",headers:body?{"Content-Type":"application/json"}:undefined,body:body?JSON.stringify(body):undefined});
+  let j=null;try{j=await r.json()}catch(e){}
+  return{status:r.status,json:j};
+}
+function setStatus(st){sync.status=st;if(st==="ok")sync.last=Date.now();updateSyncUi()}
+function updateSyncUi(){
+  const b=$("syncBtn");if(!b)return;
+  const L={off:"☁ 同期",pending:"☁ 同期: 送信待ち…",busy:"☁ 同期: 同期中…",ok:"☁ 同期: 済み",offline:"☁ 同期: 未送信（通信できません）",error:"☁ 同期: エラー",view:"☁ 閲覧専用"};
+  b.textContent=L[(sync.on||sync.viewOnly)?sync.status:"off"]||L.off;
+  if($("syncDlg").open)renderSyncDlg();
+}
+function schedulePush(){
+  if(!sync.on||sync.viewOnly)return;
+  clearTimeout(sync.timer);
+  setStatus("pending");
+  sync.timer=setTimeout(push,2500);
+}
+async function push(){
+  if(!sync.on||sync.viewOnly)return;
+  if(sync.busy){sync.again=true;return}
+  sync.busy=true;setStatus("busy");
+  try{
+    const r=await api("PUT",sync.k,{data:toWire(own),ro:sync.ro});
+    if(r.status===200&&r.json&&r.json.data){
+      const merged=mergeOwn(own,normOwn(r.json.data));
+      if(!sameOwn(merged,own)){own=merged;persistOwn();applyOwn();render()}
+      setStatus("ok");
+    }else if(r.status===429){setStatus("pending");clearTimeout(sync.timer);sync.timer=setTimeout(push,4000)}
+    else setStatus("error");
+  }catch(e){setStatus("offline")}
+  finally{sync.busy=false;if(sync.again){sync.again=false;schedulePush()}}
+}
+async function pull(force){
+  if(!sync.on||sync.viewOnly)return;
+  if(!force&&Date.now()-sync.lastPull<15000)return;
+  sync.lastPull=Date.now();
+  try{
+    const r=await api("GET",sync.k);
+    if(r.status===200&&r.json&&r.json.data){
+      const server=normOwn(r.json.data),merged=mergeOwn(own,server);
+      if(!sameOwn(merged,own)){own=merged;persistOwn();applyOwn();render()}
+      if(!sameOwn(merged,server))schedulePush();else setStatus("ok");
+    }else if(r.status===404&&r.json&&r.json.error==="not_found"){schedulePush()}
+    else setStatus("error");
+  }catch(e){setStatus("offline")}
+}
+async function adoptKey(key){
+  let r;
+  try{r=await api("GET",key)}catch(e){toast("サーバーに接続できませんでした");return false}
+  if(!(r.status===200&&r.json&&r.json.data&&r.json.ro===false)){
+    toast(r.json&&r.json.error==="not_found"?"このリンクのデータが見つかりませんでした":"このリンクでは接続できませんでした");
+    return false;
+  }
+  const server=normOwn(r.json.data);
+  let next=server;
+  if(Object.keys(own).length&&!sameOwn(own,server)){
+    if(await ask("この端末にも、枚数が入っています。\nリンクの枚数と合わせますか？\nOK＝合わせる（新しく変えたほうを優先）\nキャンセル＝リンクの枚数だけにする"))next=mergeOwn(own,server);
+  }
+  own=next;
+  sync.on=true;sync.k=key;sync.ro=await deriveRo(key);saveSyncKeys();
+  persistOwn();
+  history.replaceState(null,"",location.pathname+location.search);
+  applyOwn();render();
+  if(!sameOwn(next,server))schedulePush();else setStatus("ok");
+  toast("専用リンクの枚数を読み込みました");
+  updateSyncUi();
+  return true;
+}
+async function startSync(){
+  sync.k=randKey();sync.ro=await deriveRo(sync.k);sync.on=true;saveSyncKeys();
+  await push();
+  if(sync.status!=="ok"){
+    sync.on=false;sync.k="";sync.ro="";saveSyncKeys();setStatus("off");
+    toast("同期をはじめられませんでした。しばらくしてから、もう一度お試しください");
+  }else toast("同期をはじめました。専用リンクを保存してください");
+  renderSyncDlg();
+}
+async function stopSync(){
+  if(!(await ask("同期をやめて、サーバーに保存した枚数を削除します。\nこの端末の枚数は残ります。\nよろしいですか？")))return;
+  try{
+    const r=await api("DELETE",sync.k);
+    if(r.status!==200)throw new Error("delete");
+  }catch(e){toast("サーバーのデータを削除できませんでした。通信できるときに、もう一度お試しください");return}
+  sync.on=false;sync.k="";sync.ro="";saveSyncKeys();setStatus("off");
+  toast("同期をやめました");
+  renderSyncDlg();
+}
+function copyText(t,msg){
+  const fb=()=>ask("下の文字をコピーしてください",{input:true,value:t});
+  if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast(msg),fb);else fb();
+}
+let qrLoading=null;
+function loadQrLib(){
+  if(window.qrcode)return Promise.resolve();
+  return qrLoading||(qrLoading=new Promise((res,rej)=>{
+    const sc=document.createElement("script");
+    sc.src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+    sc.onload=res;sc.onerror=()=>{qrLoading=null;rej(new Error("qr"))};
+    document.head.appendChild(sc);
+  }));
+}
+async function showQr(){
+  const box=$("qrBox");
+  if(box.innerHTML){box.innerHTML="";return}
+  try{
+    await loadQrLib();
+    const qr=qrcode(0,"M");qr.addData(privateLink());qr.make();
+    box.innerHTML='<img alt="専用リンクのQRコード" src="'+qr.createDataURL(5,8)+'"><p class="sm">スマホのカメラで読み取ってください。このQRは、あなたの専用リンクです。他の人に見せないでください。</p>';
+  }catch(e){box.innerHTML='<p class="sm">QRコードを作れませんでした（通信できない可能性があります）。リンクをコピーして送ってください。</p>'}
+}
+function renderSyncDlg(){
+  const body=$("syncBody");if(!body)return;
+  const keep=$("qrBox")?$("qrBox").innerHTML:"";
+  if(!sync.on){
+    body.innerHTML=`<p class="sm">同期をはじめると、パソコンとスマホなど、どの端末でも同じ枚数を見られます。ブラウザのデータを消しても、専用リンクを開けば、同じ枚数に戻れます。</p>
+<p class="sm">保存されるのは、カードのidと枚数・「欲しい」の印だけです（名前やメールアドレスは保存しません）。専用リンクを知っている人は、その枚数を見たり変えたりできます。</p>
+<div class="srow"><button class="main" data-act="start">同期をはじめる</button><button data-act="connect">リンクで接続する</button></div>`;
+    return;
+  }
+  const stText={ok:"同期済み（最終 "+new Date(sync.last||Date.now()).toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit"})+"）",pending:"送信待ち…",busy:"同期中…",offline:"通信できません。つながったとき、自動で送ります",error:"同期できませんでした。しばらくしてから、もう一度お試しください"}[sync.status]||"";
+  body.innerHTML=`<p class="sm"><b>同期: オン</b>　${stText}</p>
+<div class="srow"><button class="main" data-act="copy">専用リンクをコピー</button>${navigator.share?'<button data-act="share">スマホなどに送る</button>':""}<button data-act="qr">QRコードを表示</button></div>
+<div id="qrBox">${keep}</div>
+<p class="sm">専用リンクは、あなた専用のパスワードのようなものです。知っている人は、枚数を変えられます。ブックマークやホーム画面に保存しておくと、ブラウザのデータを消しても、同じ枚数に戻れます。</p>
+<div class="srow"><button data-act="copyro">見るだけのリンクをコピー</button><button data-act="syncnow">今すぐ同期</button></div>
+<p class="sm">「見るだけのリンク」は、取引の相手に、持っているカードを見せたいときに使います。相手は、枚数を変えられません。</p>
+<div class="srow"><button data-act="connect">リンクで接続する</button><button class="danger" data-act="stop">同期をやめる（サーバーのデータを削除）</button></div>`;
+}
+async function loadViewOnly(v){
+  sync.viewOnly=true;
+  document.body.classList.add("viewonly");
+  $("voBanner").hidden=false;
+  let r;
+  try{r=await api("GET",v)}catch(e){r=null}
+  if(r&&r.status===200&&r.json&&r.json.data){own=normOwn(r.json.data);applyOwn();setStatus("view")}
+  else $("voBanner").querySelector("span").textContent="このリンクのデータが見つかりませんでした。";
+  render();
+}
+async function boot(){
+  loadSyncKeys();
+  readOwn();
+  if(sync.on)sync.ro=await deriveRo(sync.k);
+  const h=parseHash();
+  render();
+  try{await loadMaster()}catch(e){console.error(e);loadError=true}
+  loading=false;
+  if(h&&h.type==="v"){await loadViewOnly(h.key);return}
+  applyOwn();render();
+  if(h&&h.type==="k"){
+    if(h.key!==sync.k)await adoptKey(h.key);
+    else history.replaceState(null,"",location.pathname+location.search);
+  }
+  updateSyncUi();
+  if(sync.on)pull(true);
 }
 async function loadMaster(){
   const r=await fetch(MASTER_URL,{cache:"no-cache"});
@@ -556,6 +760,10 @@ try{
   if([3,4,5,6].includes(c))tradeCols=c;
   if(p!==null&&[0,4,8,12,16,20].includes(+p))tradePer=+p;
 }catch(e){}
+// パラレルカード: カード番号（num）に、小文字の「p」が入っているカード（大文字のPR・PR★は対象外）
+function isPara(c){return /p/.test(c.num||"")}
+let showPara=true;
+try{showPara=localStorage.getItem("aikatsu-para")!=="0"}catch(e){}
 // 持ってないカードの表示: "color"（カラー）または "gray"（白黒）
 let offMode="color";
 try{offMode=localStorage.getItem("aikatsu-offmode")==="gray"?"gray":"color"}catch(e){}
@@ -614,6 +822,7 @@ function render(){
     if(tab==="own"&&c.qty<1)return false;
     if(tab==="no"&&c.qty>0)return false;
     if(tab==="wish"&&!c.wish)return false;
+    if(!showPara&&isPara(c))return false;
     if(sb.size&&!sb.has(c.brand||"__none"))return false;
     if(ss.size&&!ss.has(c.series||"__none"))return false;
     if(st.size&&!st.has(c.type))return false;
@@ -654,6 +863,10 @@ function render(){
   $("vtoggle").textContent=vmode==="grid"?"表示: カード":"表示: リスト";
   $("gstoggle").textContent="持ってないカード: "+(offMode==="gray"?"白黒":"カラー");
   document.body.classList.toggle("gray-off",offMode==="gray");
+  const paraN=cards.filter(isPara).length;
+  $("ptoggle").hidden=paraN===0;
+  $("ptoggle").textContent="パラレル: "+(showPara?"表示":"非表示")+"（"+paraN+"枚）";
+  $("ptoggle").classList.toggle("on",!showPara);
 
   const tile=c=>`<div class="tile${c.qty<1?" off":""}" data-id="${c.id}" style="--c:${COLORS[c.type]||"var(--line)"}"><div class="tpic">${photoHtml(c,faceHtml(c))}<button class="theart ${c.wish?"on":""}" data-a="w" aria-label="欲しいリストに入れる">${c.wish?"♥":"♡"}</button></div>${ownBadge(c)}</div>`;
 
@@ -699,9 +912,11 @@ $("list").onclick=e=>{
     }
     return;
   }
+  if(sync.viewOnly)return;
   if(a==="+")c.qty=Math.min(99,c.qty+1);
   else if(a==="-")c.qty=Math.max(0,c.qty-1);
   else c.wish=!c.wish;
+  touch(c);
   save();
   render();
 };
@@ -717,7 +932,9 @@ $("tabs").onclick=e=>{
 ["q","fBrand","fSeries","fType","fRare","fCat"].forEach(id=>$(id).addEventListener("input",()=>{tradePage=0;render()}));
 
 $("exp").onclick=()=>{
-  const t=JSON.stringify(own);
+  const q={},w=[];
+  cards.forEach(c=>{if(c.qty>0)q[c.id]=c.qty;if(c.wish)w.push(c.id)});
+  const t=JSON.stringify({q,w});
   const fb=()=>ask("下のデータをコピーして、メモなどに保存してください",{input:true,value:t});
   if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast("枚数のデータをコピーしました"),fb);else fb();
 };
@@ -727,7 +944,16 @@ $("imp").onclick=async()=>{
   try{
     const o=JSON.parse(v);
     if(!o||typeof o!=="object"||Array.isArray(o))throw new Error("format");
-    own=o;applyOwn();save();render();
+    const now=Date.now(),next={};
+    for(const id in own)next[id]={q:0,w:0,t:now};
+    if(o.q&&typeof o.q==="object"){
+      for(const id in o.q)next[id]={q:Math.max(0,Math.min(99,o.q[id]|0)),w:0,t:now};
+      (Array.isArray(o.w)?o.w:[]).forEach(id=>{next[id]={q:next[id]?next[id].q:0,w:1,t:now}});
+    }else{
+      const old=normOwn(o);
+      for(const id in old)next[id]={q:old[id].q,w:old[id].w,t:now};
+    }
+    own=next;applyOwn();save();render();
     toast("データを読み込みました");
   }catch(e){toast("読み込めませんでした。書き出したデータを、そのまま貼り付けてください")}
 };
@@ -735,10 +961,35 @@ $("wipe").onclick=async()=>{
   const n=cards.filter(c=>c.qty>0||c.wish).length;
   if(!n){toast("消すデータがありません");return}
   if(!(await ask(`${n}枚分の枚数と「欲しい」の記録を、すべて消します。\n元に戻せません。よろしいですか？`)))return;
-  cards.forEach(c=>{c.qty=0;c.wish=false});
+  cards.forEach(c=>{if(c.qty>0||c.wish){c.qty=0;c.wish=false;touch(c)}});
   save();render();
   toast("消しました");
 };
+$("syncBtn").onclick=()=>{renderSyncDlg();$("syncDlg").showModal()};
+$("syncClose").onclick=()=>$("syncDlg").close();
+$("syncBody").onclick=async e=>{
+  const b=e.target.closest("button");if(!b)return;
+  const a=b.dataset.act;
+  if(a==="start")await startSync();
+  else if(a==="copy")copyText(privateLink(),"専用リンクをコピーしました");
+  else if(a==="copyro")copyText(roLink(),"見るだけのリンクをコピーしました");
+  else if(a==="share"){try{await navigator.share({title:"アイカツ！アンコール カード管理",text:"専用リンク（あなたの枚数が開きます）",url:privateLink()})}catch(err){}}
+  else if(a==="qr")await showQr();
+  else if(a==="syncnow"){clearTimeout(sync.timer);await pull(true);await push()}
+  else if(a==="stop")await stopSync();
+  else if(a==="connect"){
+    const v=await ask("専用リンクを貼り付けてください",{input:true});
+    if(v===null)return;
+    const m=String(v).match(/#k=([A-Za-z0-9_-]{22,64})/);
+    if(!m){toast("専用リンクの形式ではありません");return}
+    if(await adoptKey(m[1]))renderSyncDlg();
+  }
+};
+$("voBack").onclick=()=>{history.replaceState(null,"",location.pathname+location.search);location.reload()};
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")pull(false)});
+window.addEventListener("online",()=>{if(sync.on)schedulePush()});
+// すでにサイトを開いているタブで、リンク（#k= / #v=）が開かれたときも、読み込み直して反映する
+window.addEventListener("hashchange",()=>{if(parseHash())location.reload()});
 $("msList").onchange=e=>{
   const i=e.target.closest("input");if(!i||!msCur)return;
   if(i.checked)msSel[msCur].add(i.value);else msSel[msCur].delete(i.value);
@@ -780,6 +1031,12 @@ $("tradePanel").onclick=e=>{
   }
   pagerClick(e);
 };
+$("ptoggle").onclick=()=>{
+  showPara=!showPara;
+  try{localStorage.setItem("aikatsu-para",showPara?"1":"0")}catch(e){}
+  tradePage=0;
+  render();
+};
 $("gstoggle").onclick=()=>{offMode=offMode==="gray"?"color":"gray";try{localStorage.setItem("aikatsu-offmode",offMode)}catch(e){}render()};
 
 $("vtoggle").onclick=()=>{
@@ -791,12 +1048,8 @@ $("vtoggle").onclick=()=>{
 $("vclose").onclick=()=>$("view").close();
 $("view").onclick=e=>{if(e.target===$("view"))$("view").close()};
 
-// 起動: 見る人の枚数を読み込み → カード一覧を読み込む
-readOwn();
-render();
-loadMaster()
-  .then(()=>{applyOwn();loading=false;render()})
-  .catch(e=>{console.error(e);loading=false;loadError=true;render()});
+// 起動
+boot();
 </script>
 </body>
 </html>
